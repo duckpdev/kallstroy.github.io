@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КАЛЛСТРОЙ КОМБАТ</title>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const colors = [
+            "#b80300", "#b86800", "#abb800", 
+            "#0fb800", "#00b8ab", "#0003b8", 
+            "#a200b8"
+        ]
+        let backgroundMusic = new Audio("./biznes.mp3")
+        let backgroundMusicActive = false
+        let currentCoins=0
+        let addPerClick=1
+        let addPerSecond=1
+        let currentDollar=0
+        let upgradePerSecond=2
+        let upgradePerClick=2
+        console.log("что ты лысый, плаки плаки или нормалдаки")
+        objA = document.getElementById("a")
+        objB = document.getElementById("b")
+        objC = document.getElementById("c")
+        objD = document.getElementById("d")
+        objE = document.getElementById("e")
+        function dynamicBackground() {
+            let currentColorIndex = 0
+            function changeBackgroundColor() {
+                document.body.style.backgroundColor = colors[currentColorIndex]
+                currentColorIndex = (currentColorIndex + 1) % colors.length
+            }
+            setInterval(changeBackgroundColor, 1000)
+        }
+        function dynamicTextBackground() {
+            let currentColorIndex = 2
+            function changeBackgroundColor() {
+                const elements = document.querySelectorAll(".text")
+                elements.forEach(element => {
+                    element.style.backgroundColor = colors[currentColorIndex]
+                })
+                currentColorIndex = (currentColorIndex + 1) % colors.length
+            }
+            setInterval(changeBackgroundColor, 1000)
+        }
+        function updateUpgradeButtons() {
+            if (currentCoins >= upgradePerSecond) {
+                objD.style = "background-color: #00c986; color: white"
+            } else {
+                objD.style = "background-color: red; color: white"
+            }
+            if (currentCoins >= upgradePerClick) {
+                objE.style = "background-color: #00c986; color: white"
+            } else {
+                objE.style = "background-color: red; color: white"
+            }
+        }
+        function addCoins(addValue) {
+            currentCoins = currentCoins + addValue
+            currentDollar = currentDollar + (addPerClick * (Math.random() * 10000000))
+            currentDollar = Math.round(currentDollar)
+            objA.textContent = `Каллстрой коинов: ${currentCoins} (${currentDollar}$), за клик: ${addPerClick} каллстрой коин (апгрейд: ${upgradePerClick} коина)`
+            objB.textContent = `В секунду: ${addPerSecond} каллстрой коинов (апгрейд: ${upgradePerSecond} коина)`
+            updateUpgradeButtons()
+        }
+        objC.addEventListener("click", () => {
+            if (backgroundMusicActive == false) {
+                backgroundMusic.loop = true
+                backgroundMusic.play()
+            }
+            objC.style.transform = "scale(0.9)"
+            setTimeout(() => {
+                objC.style.transform = "scale(1)"
+            }, 50)
+            addCoins(1 * addPerClick)
+        })
+        objD.addEventListener("click", () => {
+            if (currentCoins < upgradePerSecond) {
+                alert("У вас недостаточно каллстрой коинов чтобы сделать апгрейд")
+                return
+            }
+            addCoins(-upgradePerSecond)
+            upgradePerSecond = Math.round(upgradePerSecond * 2.1)
+            addPerSecond = addPerSecond * 2
+            updateUpgradeButtons()
+        })
+        objE.addEventListener("click", () => {
+            if (currentCoins < upgradePerClick) {
+                alert("У вас недостаточно каллстрой коинов чтобы сделать апгрейд")
+                return
+            }
+            addCoins(-upgradePerClick)
+            upgradePerClick = Math.round(upgradePerClick * 2.1)
+            addPerClick = addPerClick * 2
+            updateUpgradeButtons()
+        })
+        setInterval(() => {
+            addCoins(Math.round(addPerSecond + 1000000))
+        }, 1000)
+        dynamicBackground()
+        dynamicTextBackground()
+    })
+</script><style>
+    body {
+        background-color: blue;
+        transition: background-color 1s
+    }
+
+    .text {
+        background-color: red;
+        color: white;
+        transition: background-color 1s
+    }
+
+    button {
+        font-size: 1rem;
+        border-style: solid;
+        border-color: #ffffff;
+        border-width: 0.15rem;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        transition: transform 0.05s ease;
+        transform: scale(1)
+    }
+
+    button:active {
+        transform: scale(0.9)
+    }
+
+    #c {
+        transition: transform 0.05s ease
+    }
+</style></head>
+
+
+<body style="background-color: rgb(15, 184, 0);">
+    <h1 class="text" style="background-color: rgb(0, 3, 184);">КАЛЛСТРОЙ КОМБАТ</h1>
+    <h2 id="a" class="text" style="background-color: rgb(0, 3, 184);">Каллстрой коинов: 1170000137 (1233566093$), за клик: 1 каллстрой коин (апгрейд: 2 коина)</h2>
+    <h2 id="b" class="text" style="background-color: rgb(0, 3, 184);">В секунду: 1 каллстрой коинов (апгрейд: 2 коина)</h2>
+    <button id="d" style="background-color: rgb(0, 201, 134); color: white;">Апгрейд коинов в секунду</button>
+    <button id="e" style="background-color: rgb(0, 201, 134); color: white;">Апгрейд коинов за клик</button>
+    <h3 class="text" style="background-color: rgb(0, 3, 184);">Жми, жми!</h3>
+    <img id="c" src="kallstroy.jpeg" style="height: 300px; width: auto; transform: scale(1);">
+    <h2 class="text" style="background-color: rgb(0, 3, 184);">ЖМИ КАЛЛСТРОЯ ЧТОБЫ ПОЛУЧАТЬ КАЛЛСТРОЙ КОИН</h2>
+
+</body></html>
